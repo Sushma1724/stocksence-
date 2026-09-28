@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "StockSense Inventory"
+description = "A real-time inventory operations dashboard for warehouse managers and staff, connected to the StockSense API for products, receipts, deliveries, transfers, adjustments, and stock history."
+version = "1.0.0"
+id = "artifacts/stocksense-web"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19307
+
+[services.development]
+run = "pnpm --filter @workspace/stocksense-web run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/stocksense-web", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/stocksense-web/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19307"
+BASE_PATH = "/"
